@@ -51,6 +51,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
   public
   def filter(event)
     @logger.info("do collate filter")
+    @logger.info(eventB.timestamp.to_i)
     if event == LogStash::SHUTDOWN
       @job.trigger()
       @job.unschedule()
