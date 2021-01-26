@@ -74,7 +74,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
 
       if (@collatingDone)
         while collatedEvent = @collatingArray.pop
-          collatedEvent.get("tags") = Array.new if collatedEvent.get("tags").nil?
+          collatedEvent.tag(Array.new) if collatedEvent.get("tags").nil?
           collatedEvent.get("tags") << "collated"
           filter_matched(collatedEvent)
           yield collatedEvent
@@ -103,7 +103,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
     if (@collatingDone)
       @mutex.synchronize{
         while collatedEvent = @collatingArray.pop
-          collatedEvent.("tags") = Array.new if collatedEvent.("tags").nil?
+          collatedEvent.tag(Array.new) if collatedEvent.("tags").nil?
           collatedEvent.("tags") << "collated"
           events << collatedEvent
         end # while @collatingArray.pop
