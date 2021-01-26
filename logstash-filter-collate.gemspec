@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.metadata = { "logstash_plugin" => "true", "logstash_group" => "filter" }
 
   # Gem dependencies
-  s.add_runtime_dependency "logstash-core-plugin-api", "~> 1.0"
+  s.add_runtime_dependency "logstash-core-plugin-api", "~> 2.1.29"
   s.add_runtime_dependency 'rufus-scheduler', ['~> 3.0.9']
 
   s.add_development_dependency 'logstash-devutils'
