@@ -48,6 +48,14 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
     end
   end # def register
 
+  # Called when Logstash stops
+  public
+  def close
+      @job.trigger()
+      @job.unschedule()
+      @logger.info("collate filter thread shutdown.")
+  end
+
   public
   def filter(event)
     @logger.info("do collate filter")
@@ -99,6 +107,10 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
     @logger.info("collating done", :number => @collatingArray.length)
     @collatingDone = true
   end # def collate
+
+  def periodic_flush
+    true
+  end
 
   # Flush any pending messages.
   public
