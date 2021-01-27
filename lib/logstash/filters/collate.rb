@@ -44,6 +44,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
       @logger.info("Scheduler Activated")
       @mutex.synchronize{
         collate
+        flush
       }
     end
   end # def register
@@ -104,7 +105,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
   public
   def flush(options = {})
     events = []
-    @logger.info("flushing", :number => @collatingArray.length)
+    @logger.info("flushing", :number => @collatingArray.length, :collatingDone => @collatingDone)
     if (@collatingDone)
       @mutex.synchronize{
         while collatedEvent = @collatingArray.shift
