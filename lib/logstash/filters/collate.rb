@@ -116,7 +116,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
       # reset collatingDone flag.
       @collatingDone = false
     end
-    @logger.info("flushing done")
+    @logger.info("flushing done",events.length())
     return events
   end # def flush
 end #
