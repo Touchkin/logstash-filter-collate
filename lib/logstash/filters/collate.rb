@@ -108,8 +108,8 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
     if (@collatingDone)
       @mutex.synchronize{
         while collatedEvent = @collatingArray.pop
-          collatedEvent.tag(Array.new) if collatedEvent.("tags").nil?
-          collatedEvent.("tags") << "collated"
+          collatedEvent.tag(Array.new) if collatedEvent.get("tags").nil?
+          collatedEvent.get("tags") << "collated"
           @logger.info("flushing event", :event => collatedEvent)
           events << collatedEvent
         end # while @collatingArray.pop
