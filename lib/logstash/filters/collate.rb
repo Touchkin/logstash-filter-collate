@@ -104,7 +104,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
   public
   def flush(options = {})
     events = []
-    @logger.info("flushing")
+    @logger.info("flushing", @collatingArray.length)
     if (@collatingDone)
       @mutex.synchronize{
         while collatedEvent = @collatingArray.pop
