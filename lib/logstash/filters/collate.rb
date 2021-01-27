@@ -80,7 +80,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
           filter_matched(collatedEvent)
           @logger.info("assembling return")
           yield collatedEvent
-        end # while @collatingArray.pop
+        }
         # reset collatingDone flag
         @collatingDone = false
       end
