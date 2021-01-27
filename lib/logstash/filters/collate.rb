@@ -77,8 +77,9 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
       if (@collatingDone)
         @collatingArray.each { |collatedEvent|
           collatedEvent.tag("collated")
+          filter_matched(collatedEvent)
           @logger.info("assembling return")
-          # yield collatedEvent
+          yield collatedEvent
         }
         # reset collatingDone flag
         @collatingDone = false
@@ -88,13 +89,14 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
 
   private
   def collate
-    @logger.info("collating")
+    @logger.info("collating", @collatingArray.length)
     if (@order == "ascending")
       # call .to_i for now until https://github.com/elasticsearch/logstash/issues/2052 is fixed
       @collatingArray.sort! { |eventA, eventB| eventA.timestamp.to_i <=> eventB.timestamp.to_i }
     else
       @collatingArray.sort! { |eventA, eventB| eventB.timestamp.to_i <=> eventA.timestamp.to_i }
     end
+    @logger.info("collating done", @collatingArray.length)
     @collatingDone = true
   end # def collate
 
@@ -108,7 +110,6 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
         while collatedEvent = @collatingArray.shift
           @logger.info("flushing event", :event => collatedEvent)
           collatedEvent.tag("collated")
-          filter_matched(collatedEvent)
           events << collatedEvent
         end # while @collatingArray.pop
       }
