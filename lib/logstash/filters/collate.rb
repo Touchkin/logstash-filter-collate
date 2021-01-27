@@ -61,7 +61,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
     # if the event is collated, a "collated" tag will be marked, so for those uncollated event, cancel them first.
     if event.get("tags").nil? || !event.get("tags").include?("collated")
       event.cancel
-      @logger.info("cencelling event", :event => event)
+      @logger.info("cancelling event", :event => event)
     else
       return
     end
@@ -89,14 +89,14 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
 
   private
   def collate
-    @logger.info("collating", @collatingArray.length)
+    @logger.info("collating", :number => @collatingArray.length)
     if (@order == "ascending")
       # call .to_i for now until https://github.com/elasticsearch/logstash/issues/2052 is fixed
       @collatingArray.sort! { |eventA, eventB| eventA.timestamp.to_i <=> eventB.timestamp.to_i }
     else
       @collatingArray.sort! { |eventA, eventB| eventB.timestamp.to_i <=> eventA.timestamp.to_i }
     end
-    @logger.info("collating done", @collatingArray.length)
+    @logger.info("collating done", :number => @collatingArray.length)
     @collatingDone = true
   end # def collate
 
@@ -104,7 +104,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
   public
   def flush(options = {})
     events = []
-    @logger.info("flushing", @collatingArray.length)
+    @logger.info("flushing", :number => @collatingArray.length)
     if (@collatingDone)
       @mutex.synchronize{
         while collatedEvent = @collatingArray.shift
