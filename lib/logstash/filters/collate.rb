@@ -77,9 +77,8 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
       if (@collatingDone)
         @collatingArray.each { |collatedEvent|
           collatedEvent.tag("collated")
-          filter_matched(collatedEvent)
           @logger.info("assembling return")
-          yield collatedEvent
+          # yield collatedEvent
         }
         # reset collatingDone flag
         @collatingDone = false
@@ -109,6 +108,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
         while collatedEvent = @collatingArray.shift
           @logger.info("flushing event", :event => collatedEvent)
           collatedEvent.tag("collated")
+          filter_matched(collatedEvent)
           events << collatedEvent
         end # while @collatingArray.pop
       }
