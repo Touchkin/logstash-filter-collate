@@ -130,7 +130,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
     else
       collate
     end
-    @logger.info("flushing done", :number => events.length)
+    @logger.info("flushing done", :events => events)
     return events
   end # def flush
 end #
