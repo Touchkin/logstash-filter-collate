@@ -110,6 +110,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
         while collatedEvent = @collatingArray.pop
           collatedEvent.tag(Array.new) if collatedEvent.("tags").nil?
           collatedEvent.("tags") << "collated"
+          @logger.info("flushing event", :event => collatedEvent)
           events << collatedEvent
         end # while @collatingArray.pop
       }
