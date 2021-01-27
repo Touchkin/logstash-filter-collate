@@ -66,7 +66,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
 
     # if the event is collated, a "collated" tag will be marked, so for those uncollated event, cancel them first.
     if event.get("tags").nil? || !event.get("tags").include?("collated")
-      event.cancel
+      # event.cancel
       @logger.info("cancelling event", :event => event)
     else
       return
@@ -106,6 +106,11 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
     @collatingDone = true
   end # def collate
 
+  def periodic_flush
+    true
+  end
+
+  # Necessary to indicate Logstash to periodically call 'flush' method
   def periodic_flush
     true
   end
