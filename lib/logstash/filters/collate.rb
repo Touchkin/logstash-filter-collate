@@ -51,8 +51,6 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
   # Called when Logstash stops
   public
   def close
-      @job.trigger()
-      @job.unschedule()
       @logger.info("collate filter thread shutdown.")
   end
 
