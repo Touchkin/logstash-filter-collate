@@ -98,7 +98,6 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
     end
     @logger.info("collating done", :number => @collatingArray.length)
     @collatingDone = true
-    flush
   end # def collate
 
   # Flush any pending messages.
@@ -116,6 +115,8 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
       }
       # reset collatingDone flag.
       @collatingDone = false
+    else
+      collate
     end
     @logger.info("flushing done", :number => events.length)
     return events
