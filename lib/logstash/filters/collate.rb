@@ -75,7 +75,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
       end
 
       if (@collatingDone)
-        while collatedEvent = @collatingArray.shift
+        @collatingArray.each { |collatedEvent|
           collatedEvent.tag("collated")
           filter_matched(collatedEvent)
           @logger.info("assembling return")
