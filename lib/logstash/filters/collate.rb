@@ -61,6 +61,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
     # if the event is collated, a "collated" tag will be marked, so for those uncollated event, cancel them first.
     if event.get("tags").nil? || !event.get("tags").include?("collated")
       event.cancel
+      @logger.info("cencelling event", :event => event)
     else
       return
     end
